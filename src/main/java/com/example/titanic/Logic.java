@@ -14,6 +14,8 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 import org.jfree.ui.RefineryUtilities;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -34,15 +36,14 @@ public class Logic {
     }
 
 
-    public void main() throws IOException, SQLException {
+    public void main() throws IOException {
         var filePath = "src/main/resources/Пассажиры Титаника.csv";
-//        parseProductCsv(filePath);
-//        writePassengers();
-//        makeTableWithMale();
-//        makeTableWithTickets();
+        parseProductCsv(filePath);
+        writePassengers();
+        makeTableWithMale();
+        makeTableWithTickets();
 
-       BarChartDemo.createBarChart();
-
+        BarChartDemo.createBarChart();
     }
 
     private void parseProductCsv(String filePath) throws IOException {

@@ -1,5 +1,6 @@
 package com.example.titanic.service;
 
+import com.example.titanic.ConfigurationClass;
 import com.example.titanic.model.Female;
 import com.example.titanic.model.Passenger;
 import com.example.titanic.model.Ticket;
@@ -7,6 +8,8 @@ import com.example.titanic.repo.MaleRepo;
 import com.example.titanic.repo.PassengersRepo;
 import com.example.titanic.repo.TicketRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
