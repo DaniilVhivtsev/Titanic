@@ -3,9 +3,9 @@ package com.example.titanic.service;
 import com.example.titanic.model.Female;
 import com.example.titanic.model.Passenger;
 import com.example.titanic.model.Ticket;
-import com.example.titanic.repo.MaleRepo;
-import com.example.titanic.repo.PassengersRepo;
-import com.example.titanic.repo.TicketRepo;
+import com.example.titanic.repo.MaleRepository;
+import com.example.titanic.repo.PassengersRepository;
+import com.example.titanic.repo.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,38 +15,38 @@ import java.util.List;
 public class PassengerService {
 
     @Autowired
-    private PassengersRepo passengersRepo;
+    private PassengersRepository passengersRepository;
 
     @Autowired
-    private MaleRepo maleRepo;
+    private MaleRepository maleRepository;
 
     @Autowired
-    private TicketRepo ticketRepo;
+    private TicketRepository ticketRepository;
 
     public void savePassenger (Passenger passenger){
-        passengersRepo.save(passenger);
+        passengersRepository.save(passenger);
     }
 
     public List<Passenger> findAllPassengers(){
-        return passengersRepo.findAll();
+        return passengersRepository.findAll();
     }
 
     public void saveFemale(Passenger passenger){
         var female = new Female(passenger.getAge(), passenger.getFare(), passenger);
-        maleRepo.save(female);
+        maleRepository.save(female);
         passenger.setFemale(female);
-        passengersRepo.save(passenger);
+        passengersRepository.save(passenger);
     }
 
     public void saveTicket(Passenger passenger){
         var ticket = new Ticket(passenger.getTicket(), passenger);
-        ticketRepo.saveAndFlush(ticket);
+        ticketRepository.saveAndFlush(ticket);
         passenger.setTicketData(ticket);
-        passengersRepo.saveAndFlush(passenger);
+        passengersRepository.saveAndFlush(passenger);
     }
 
     public List<Ticket> findAllTickets(){
-        return ticketRepo.findAll();
+        return ticketRepository.findAll();
     }
 
     public Float averageTicketPriceForFrom(String sex, String place){
