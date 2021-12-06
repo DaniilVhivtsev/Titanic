@@ -1,9 +1,6 @@
-package com.example.titanic;
+package com.example.titanic.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "passengers")
@@ -32,10 +29,15 @@ public class Passenger {
 
     private String cabin;
 
-    private Character Embarked;
+    private Character embarked;
+
+    @OneToOne(mappedBy="passenger", fetch = FetchType.LAZY)
+    private Female female;
+
+    @OneToOne(mappedBy="passenger", fetch = FetchType.LAZY)
+    private Ticket ticketData;
 
     public Passenger() {
-
     }
 
     public Long getPassengerId() {
@@ -127,11 +129,33 @@ public class Passenger {
     }
 
     public Character getEmbarked() {
-        return Embarked;
+        return embarked;
     }
 
     public void setEmbarked(Character embarked) {
-        Embarked = embarked;
+        this.embarked = embarked;
+    }
+
+    public Female getFemale() {
+        return female;
+    }
+
+    public void setFemale(Female female) {
+        this.female = female;
+    }
+
+    public Ticket getTicketData() {
+        return ticketData;
+    }
+
+    public void setTicketData(Ticket ticketData) {
+        this.ticketData = ticketData;
+    }
+
+    @Override
+    public String toString() {
+        return passengerId + "," + survived + "," + pClass + "," + name + "," + sex
+                + "," + age + "," + sibSp + "," + parch + "," + ticket + "," + fare + "," + cabin + "," + embarked;
     }
 }
 

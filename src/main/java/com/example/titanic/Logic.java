@@ -1,30 +1,51 @@
 package com.example.titanic;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.titanic.model.Passenger;
+import com.example.titanic.service.PassengerService;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.RectangleInsets;
+import org.jfree.ui.RefineryUtilities;
 import org.springframework.stereotype.Component;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.List;
 
 @Component
 public class Logic {
 
-    private static PassengersRepo passengersRepo;
+    private PassengerService passengerService;
 
-    public Logic(PassengersRepo passengersRepo) {
-        this.passengersRepo = passengersRepo;
+    public Logic(PassengerService passengerService) {
+        this.passengerService = passengerService;
     }
 
 
-    public static void main() throws IOException {
+    public void main() throws IOException, SQLException {
         var filePath = "src/main/resources/Пассажиры Титаника.csv";
-        parseProductCsv(filePath);
-        System.out.println("Hello world!");
+//        parseProductCsv(filePath);
+//        writePassengers();
+//        makeTableWithMale();
+//        makeTableWithTickets();
+
+       BarChartDemo.createBarChart();
+
     }
 
-    private static void parseProductCsv(String filePath) throws IOException {
+    private void parseProductCsv(String filePath) throws IOException {
         //Загружаем строки из файла
         List<String> fileLines = Files.readAllLines(Paths.get(filePath));
         fileLines.remove(0);
@@ -66,13 +87,49 @@ public class Logic {
                         splitLine[10].toCharArray()[0]
                 );*/
 
-                passengersRepo.save(passenger);
+                passengerService.savePassenger(passenger);
             } catch (Exception exception){
                 var nam = splitLine[4];
                 var ar = splitLine[4].length();
 
                 exception.getMessage();
             }
+        }
+    }
+    
+    public void writePassengers(){
+        for (var passenger: passengerService.findAllPassengers()) {
+            System.out.println(passenger.toString());
+        }
+    }
+
+    public void makeTableWithMale(){
+        var min = Float.MAX_VALUE;
+        var max = 0f;
+
+        for (var passenger:passengerService.findAllPassengers()) {
+            if (passenger.getSex().equals("female") && passenger.getAge() != null && passenger.getAge() >= 15 && passenger.getAge() <= 30){
+                if (passenger.getFare() < min)
+                    min = passenger.getFare();
+                if (passenger.getFare() > max)
+                    max = passenger.getFare();
+                passengerService.saveFemale(passenger);
+            }
+        }
+
+        System.out.println(max - min);
+    }
+
+    public void makeTableWithTickets(){
+        for (var passenger:passengerService.findAllPassengers()){
+            if(passenger.getAge() != null && (passenger.getSex().equals("male") && ( passenger.getAge() >= 45.0 && passenger.getAge() <= 60.0)
+                    || passenger.getSex().equals("female") && (passenger.getAge() >= 20 && passenger.getAge() <= 25))){
+                passengerService.saveTicket(passenger);
+            }
+        }
+
+        for (var ticket:passengerService.findAllTickets()) {
+            System.out.println(ticket);
         }
     }
 }
