@@ -32,22 +32,15 @@ public class BarChartDemo{
         dataset.addValue(passengerService.averageTicketPriceForFrom("female", "Q"), "Женщина" , "Куинстаун");
 
         var chart = ChartFactory.createBarChart(
-                "Средние цены билета",
-                null,
-                "Цена",
-                dataset,
-                PlotOrientation.VERTICAL,
-                true,
-                false,
-                false);
+                "График средних цен", null, "Средняя цена", dataset,
+                PlotOrientation.VERTICAL, true, false, false);
         chart.setBackgroundPaint(Color.yellow);
         chart.getTitle().setPaint(Color.blue);
         var plot = chart.getCategoryPlot();
-        var br = (BarRenderer) plot.getRenderer();
-        br.setItemMargin(0);
+        ((BarRenderer) plot.getRenderer()).setItemMargin(0);
         CategoryAxis domain = plot.getDomainAxis();
-        domain.setLowerMargin(0.25);
         domain.setUpperMargin(0.25);
+        domain.setLowerMargin(0.25);
 
         ChartUtilities.saveChartAsPNG(new File("image.png"), chart, 1000, 600);
     }
