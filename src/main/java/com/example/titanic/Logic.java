@@ -1,29 +1,13 @@
 package com.example.titanic;
 
+import com.example.titanic.chart.BarChartDemo;
 import com.example.titanic.model.Passenger;
 import com.example.titanic.service.PassengerService;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.block.BlockBorder;
-import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.title.TextTitle;
-import org.jfree.data.category.CategoryDataset;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.ui.RectangleInsets;
-import org.jfree.ui.RefineryUtilities;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.List;
 
 @Component
@@ -36,7 +20,7 @@ public class Logic {
     }
 
 
-    public void main() throws IOException {
+    public void main() throws IOException{
         var filePath = "src/main/resources/Пассажиры Титаника.csv";
         parseProductCsv(filePath);
         writePassengers();
@@ -47,7 +31,6 @@ public class Logic {
     }
 
     private void parseProductCsv(String filePath) throws IOException {
-        //Загружаем строки из файла
         List<String> fileLines = Files.readAllLines(Paths.get(filePath));
         fileLines.remove(0);
         for (String fileLine : fileLines) {
@@ -73,26 +56,9 @@ public class Logic {
                 if (splitLine.length == 10)
                     passenger.setEmbarked(null);
                 else passenger.setEmbarked(splitLine[10].toCharArray()[0]);
-                /*var passenger1 = new Passenger(
-                        Long.parseLong(splitLine[0]),
-                        Short.parseShort(splitLine[1]) != 0,
-                        Short.parseShort(splitLine[2]),
-                        name,
-                        splitLine[3],
-                        splitLine[4] != null ? Integer.parseInt(splitLine[4]) : null,
-                        Integer.parseInt(splitLine[5]),
-                        Integer.parseInt(splitLine[6]),
-                        splitLine[7],
-                        Float.parseFloat(splitLine[8]),
-                        splitLine[9],
-                        splitLine[10].toCharArray()[0]
-                );*/
 
                 passengerService.savePassenger(passenger);
             } catch (Exception exception){
-                var nam = splitLine[4];
-                var ar = splitLine[4].length();
-
                 exception.getMessage();
             }
         }

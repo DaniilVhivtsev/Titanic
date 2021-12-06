@@ -1,6 +1,5 @@
 package com.example.titanic.service;
 
-import com.example.titanic.ConfigurationClass;
 import com.example.titanic.model.Female;
 import com.example.titanic.model.Passenger;
 import com.example.titanic.model.Ticket;
@@ -8,8 +7,6 @@ import com.example.titanic.repo.MaleRepo;
 import com.example.titanic.repo.PassengersRepo;
 import com.example.titanic.repo.TicketRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,5 +47,21 @@ public class PassengerService {
 
     public List<Ticket> findAllTickets(){
         return ticketRepo.findAll();
+    }
+
+    public Float averageTicketPriceForFrom(String sex, String place){
+        var count = 0;
+        var sum = 0.0f;
+        for (var person:findAllPassengers()) {
+            if (person.getSex().equals(sex)
+                    && person.getFare() != null
+                    && person.getEmbarked() != null
+                    && person.getEmbarked() == place.toCharArray()[0]){
+                count++;
+                sum += person.getFare();
+            }
+        }
+
+        return sum / count;
     }
 }
